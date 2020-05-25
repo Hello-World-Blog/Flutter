@@ -82,8 +82,11 @@ class _TaskState extends State<Task> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  SizedBox(
+                    width:MediaQuery.of(context).size.width/1.75,
+                    child:Text(
                     task.title,
+                    maxLines: null,
                     style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: Color(0xff8280FF),
@@ -91,7 +94,7 @@ class _TaskState extends State<Task> {
                         decoration: task.isCompleted
                             ? TextDecoration.lineThrough
                             : null),
-                  ),
+                  )),
                   SizedBox(
                     height: 10,
                   ),
@@ -104,18 +107,14 @@ class _TaskState extends State<Task> {
             ]),
             Row(
               children: [
-                Icon(
-                    this.task.priority == 3
-                        ? Icons.priority_high
+                IconButton(
+                    iconSize: 25,
+                    icon:this.task.priority == 3
+                        ? Image.asset("assets/icons/icon_high.png",color: Colors.red,)
                         : this.task.priority == 2
-                            ? Icons.build
-                            : Icons.low_priority,
-                    color: this.task.priority == 3
-                        ? Colors.red
-                        : this.task.priority == 2
-                            ? Colors.orange[700]
-                            : Colors.yellow[600],
-                    size: 25),
+                            ? Image.asset("assets/icons/icon_medium.png",color:Colors.orange[700])
+                            : Image.asset("assets/icons/icon_low.png",color: Colors.yellow[600],),
+                    onPressed: (){},),
                 IconButton(
                   icon: Icon(
                     Icons.edit,

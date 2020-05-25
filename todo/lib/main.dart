@@ -222,6 +222,7 @@ class _ToDoState extends State<ToDoHome> with TickerProviderStateMixin {
         content: Text("Would you like to delete the Task ?"),
       ),
     );
+    return false;
   }
 
   void refresh() {

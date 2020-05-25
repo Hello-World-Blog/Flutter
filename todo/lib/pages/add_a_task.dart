@@ -362,13 +362,14 @@ class _AddState extends State<AddTask> {
       lastDate: DateTime(2040, 12, 31),
       borderRadius: 16,
     );
-    return newDateTime;
+    DateTime returnDateTime=DateTime(newDateTime.year,newDateTime.month,newDateTime.day);
+    return returnDateTime;
   }
 
   Future<TimeOfDay> timepicker() async {
     TimeOfDay newTime = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay(hour: 0, minute: 0),
+      initialTime: TimeOfDay.fromDateTime(DateTime.now()),
     );
     return newTime;
   }

@@ -80,7 +80,7 @@ class DatabaseProvider {
   Future<List<TaskModel>> getSortedtasks() async {
     final db = await database;
     var tasks =
-        await db.rawQuery('SELECT * FROM $TASKS_TABLE ORDER BY $COLUMN_DATE,$COLUMN_START');
+        await db.rawQuery('SELECT * FROM $TASKS_TABLE ORDER BY $COLUMN_DATE ASC,$COLUMN_START ASC');
     return List.generate(tasks.length, (index) {
       return TaskModel.fromMap(tasks[index]);
     });
