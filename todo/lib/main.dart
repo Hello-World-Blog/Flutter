@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:todo/pages/add_a_task.dart';
 import 'package:todo/utils/database_provider.dart';
+import 'package:todo/utils/notification_provider.dart';
 import 'package:todo/widgets/task.dart';
 import 'package:flutter/services.dart';
-import 'package:todo/models/task.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-List<TaskModel> tasks = List<TaskModel>();
 List<String> weeks = [
   'Monday',
   'Tuesday',
@@ -39,6 +38,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+            iconTheme: IconThemeData(color: Color(0xff8280FF)),
             primaryColor: Color(0xff8280FF),
             backgroundColor: Colors.white,
             fontFamily: "Segoe UI",
@@ -132,9 +132,10 @@ class _ToDoState extends State<ToDoHome> with TickerProviderStateMixin {
           )),
       body: TabBarView(controller: _tabController, children: [
         Container(
+            padding: EdgeInsets.only(top:10),
             color: Colors.white,
             child: FutureBuilder(
-                future: DatabaseProvider.db.getTasks(),
+                future: DatabaseProvider.db.getSortedtasks(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return ListView.builder(
@@ -142,6 +143,9 @@ class _ToDoState extends State<ToDoHome> with TickerProviderStateMixin {
                         itemBuilder: (context, i) {
                           var item = snapshot.data[i];
                           return Dismissible(
+                              confirmDismiss: (direction) =>
+                                  showDismissDialog(context, item),
+                              direction: DismissDirection.startToEnd,
                               background: Container(
                                 color: Colors.red,
                                 child: Icon(
@@ -150,13 +154,6 @@ class _ToDoState extends State<ToDoHome> with TickerProviderStateMixin {
                                   color: Colors.white,
                                 ),
                               ),
-                              onDismissed: (direction) async {
-                                if(direction==DismissDirection.startToEnd){
-                                await DatabaseProvider.db
-                                    .delete(item.id)
-                                    .then((value) => setState(() {}));
-                              }
-                              },
                               key: ObjectKey(item),
                               child: Task(item, notifyParent: refresh));
                         });
@@ -167,9 +164,10 @@ class _ToDoState extends State<ToDoHome> with TickerProviderStateMixin {
                   }
                 })),
         Container(
+            padding: EdgeInsets.only(top:10),
             color: Colors.white,
             child: FutureBuilder(
-                future: DatabaseProvider.db.getTasks(),
+                future: DatabaseProvider.db.getSortedtasks(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return ListView.builder(
@@ -193,6 +191,37 @@ class _ToDoState extends State<ToDoHome> with TickerProviderStateMixin {
                 })),
       ]),
     ));
+  }
+
+  Future<bool> showDismissDialog(context, item) async {
+    showDialog(
+      context: context,
+      child: AlertDialog(
+        actions: [
+          IconButton(
+              icon: Icon(Icons.check, color: Colors.green),
+              onPressed: () async {
+                await DatabaseProvider.db
+                    .delete(item.id)
+                    .then((value) => setState(() {}));
+                await NotificationProvider.instance.cancelNotification(item.id);
+                Navigator.pop(context);
+                return true;
+              }),
+          IconButton(
+            icon: Icon(
+              Icons.error,
+              color: Colors.red,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+              return false;
+            },
+          ),
+        ],
+        content: Text("Would you like to delete the Task ?"),
+      ),
+    );
   }
 
   void refresh() {

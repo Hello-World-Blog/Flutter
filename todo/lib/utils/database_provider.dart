@@ -77,6 +77,15 @@ class DatabaseProvider {
         where: "id = ?", whereArgs: [task.id]);
   }
 
+  Future<List<TaskModel>> getSortedtasks() async {
+    final db = await database;
+    var tasks =
+        await db.rawQuery('SELECT * FROM $TASKS_TABLE ORDER BY $COLUMN_DATE');
+    return List.generate(tasks.length, (index) {
+      return TaskModel.fromMap(tasks[index]);
+    });
+  }
+
   toggleIsCompleted(TaskModel task) async {
     final db = await database;
     TaskModel completed = TaskModel(

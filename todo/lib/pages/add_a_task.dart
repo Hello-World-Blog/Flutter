@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rounded_date_picker/rounded_picker.dart';
 import 'package:todo/models/task.dart';
-import 'package:todo/main.dart';
 import 'package:todo/utils/database_provider.dart';
+import 'package:todo/utils/notification_provider.dart';
 
 class AddTask extends StatefulWidget {
   final TaskModel task;
@@ -50,61 +50,48 @@ class _AddState extends State<AddTask> {
                   isValidime(
                       newTask.start, newTask.end, newTask.date, newTask.title);
                   if (isValidTask == false) {
-                    showDialog(
-                        context: context,
-                        child: AlertDialog(
-                          title: Text(
-                            "Error..!",
-                            style: TextStyle(color: Colors.red),
-                          ),
-                          content: Text(
-                              "Title must not be left blank\nDate must be specified\nStart Time and End Time must be given\nStart Time should be less than End Time"),
-                          actions: [
-                            RaisedButton(
-                                child: Text("Ok"),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                color: Color(0xff8280FF))
-                          ],
-                        ));
+                    showErrorDialog();
                   } else {
+                    newTask.priority = _priority;
                     newTask.isCompleted = false;
-                    tasks.add(newTask);
-                    await DatabaseProvider.db.insert(newTask);
+                    if (newTask.start != null) {
+                      DateTime notificationTime = DateTime(
+                          newTask.date.year,
+                          newTask.date.month,
+                          newTask.date.day,
+                          newTask.start.hour,
+                          newTask.start.minute);
+                      await DatabaseProvider.db.insert(newTask).then((value){
+                      NotificationProvider.instance.scheduleNotification(
+                          value.title, notificationTime, value.priority,value.id);
+                      });
+                    }
                     Navigator.pop(context);
                   }
                 } else {
                   task.title = taskController.text;
                   isValidime(task.start, task.end, task.date, task.title);
                   if (isValidTask == false) {
-                    showDialog(
-                        context: context,
-                        child: AlertDialog(
-                          title: Text(
-                            "Error..!",
-                            style: TextStyle(color: Colors.red),
-                          ),
-                          content: Text(
-                              "Title must not be left blank\nDate must be specified\nStart Time and End Time must be given\nStart Time should be less than End Time"),
-                          actions: [
-                            RaisedButton(
-                                child: Text("Ok"),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                color: Color(0xff8280FF))
-                          ],
-                        ));
+                    showErrorDialog();
                   } else {
                     task.priority = _priority;
-                    tasks.remove(task);
+                    if (task.start != null) {
+                      DateTime notificationTime = DateTime(
+                          task.date.year,
+                          task.date.month,
+                          task.date.day,
+                          task.start.hour,
+                          task.start.minute);
+                      NotificationProvider.instance.cancelNotification(task.id);
                     await DatabaseProvider.db.delete(task.id);
-                    tasks.add(task);
-                    await DatabaseProvider.db.insert(task);
+                    await DatabaseProvider.db.insert(task).then((value){
+                      NotificationProvider.instance.scheduleNotification(
+                          value.title, notificationTime, value.priority,value.id);
+                      });
                     Navigator.pop(context);
                   }
                 }
+              }
               },
               child: Text(
                 "Save Task",
@@ -345,12 +332,33 @@ class _AddState extends State<AddTask> {
             )));
   }
 
+  void showErrorDialog() {
+    showDialog(
+        context: context,
+        child: AlertDialog(
+          title: Text(
+            "Error..!",
+            style: TextStyle(color: Colors.red),
+          ),
+          content: Text(
+              "Title must not be left blank\nDate must be specified\nStart Time and End Time must be given\nStart Time should be less than End Time"),
+          actions: [
+            RaisedButton(
+                child: Text("Ok"),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                color: Color(0xff8280FF))
+          ],
+        ));
+  }
+
   Future<DateTime> datetimepicker() async {
     DateTime newDateTime = await showRoundedDatePicker(
       context: context,
       theme: ThemeData.dark(),
       fontFamily: "Segoe UI",
-      initialDate: DateTime.now(),
+      firstDate: DateTime.now().subtract(Duration(days: 1)),
       lastDate: DateTime(2040, 12, 31),
       borderRadius: 16,
     );
@@ -364,7 +372,6 @@ class _AddState extends State<AddTask> {
     );
     return newTime;
   }
-
   void isValidime(TimeOfDay start, TimeOfDay end, DateTime date, String text) {
     if (start == null || end == null) {
       isValidTask = false;

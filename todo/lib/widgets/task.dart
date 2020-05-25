@@ -15,6 +15,18 @@ class _TaskState extends State<Task> {
   TaskModel task;
   _TaskState(this.task);
   Widget build(BuildContext context) {
+    DateTime date = task.date.toLocal();
+    String time = date.day.toString() +
+        "-" +
+        date.month.toString() +
+        "-" +
+        date.year.toString() +
+        "  " ;
+    String start=task.start.hour<12?task.start.hour.toString():(task.start.hour-12).toString();
+    String end=task.end.hour<12?task.end.hour.toString():(task.end.hour-12).toString();
+    String duration = "$start:${task.start.minute} - $end:${task.end.minute}";
+    duration += task.end.hour > 12 ? " PM" : " AM";
+    start += task.start.hour < 12 ? " AM" : " PM";
     return Column(
       children: [
         SizedBox(
@@ -25,9 +37,13 @@ class _TaskState extends State<Task> {
             SizedBox(
               width: 20,
             ),
-            Text(
-              task.start.hour.toString() + "'o clock",
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+            RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(text: time,style: TextStyle(fontWeight: FontWeight.w300, fontSize: 18,color:Colors.black),),
+                  TextSpan(text: start,style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18,color:Color(0xff8280FF)))
+                ]
+              ),
             ),
             SizedBox(
               width: 20,
@@ -68,6 +84,7 @@ class _TaskState extends State<Task> {
                     task.title,
                     style: TextStyle(
                         fontWeight: FontWeight.w600,
+                        color: Color(0xff8280FF),
                         fontSize: 18,
                         decoration: task.isCompleted
                             ? TextDecoration.lineThrough
@@ -77,7 +94,7 @@ class _TaskState extends State<Task> {
                     height: 10,
                   ),
                   Text(
-                    "${task.start.hour}-${task.end.hour} hrs",
+                    duration,
                     style: TextStyle(fontWeight: FontWeight.w100, fontSize: 15),
                   )
                 ],
@@ -89,12 +106,12 @@ class _TaskState extends State<Task> {
                     this.task.priority == 3
                         ? Icons.priority_high
                         : this.task.priority == 2
-                            ? Icons.adb
+                            ? Icons.build
                             : Icons.low_priority,
                     color: this.task.priority == 3
                         ? Colors.red
                         : this.task.priority == 2
-                            ? Colors.orange
+                            ? Colors.orange[700]
                             : Colors.yellow[600],
                     size: 25),
                 IconButton(
