@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:todo/models/task.dart';
 import 'package:todo/pages/add_a_task.dart';
 import 'package:todo/utils/database_provider.dart';
+import 'package:todo/utils/notification_provider.dart';
 
 class Task extends StatefulWidget {
   final TaskModel task;
@@ -70,7 +71,8 @@ class _TaskState extends State<Task> {
                         ),
                   onPressed: () {
                     task.isCompleted = !task.isCompleted;
-                    DatabaseProvider.db.update(task);
+                    DatabaseProvider.db.delete(task.id);
+                    DatabaseProvider.db.insert(task).then((value) => NotificationProvider.instance.cancelNotification(task.id));
                     setState(() {});
                     widget.notifyParent();
                   }),
