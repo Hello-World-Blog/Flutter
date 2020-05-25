@@ -156,9 +156,6 @@ class _ToDoState extends State<ToDoHome> with TickerProviderStateMixin {
                                     .delete(item.id)
                                     .then((value) => setState(() {}));
                               }
-                              elif(direction==DismissDirection.startToEnd){
-                                
-                              }
                               },
                               key: ObjectKey(item),
                               child: Task(item, notifyParent: refresh));
