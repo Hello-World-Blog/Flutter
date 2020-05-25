@@ -1,2 +1,2 @@
 # Blog
-projected under https://learnai1.home.blog/
+projects under https://learnai1.home.blog/
