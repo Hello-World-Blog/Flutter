@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rounded_date_picker/rounded_picker.dart';
 import 'package:todo/models/task.dart';
-import 'package:todo/utils/database_provider.dart';
-import 'package:todo/utils/notification_provider.dart';
+import 'package:todo/utils/pickers.dart';
+import 'package:todo/utils/save_task.dart';
 
 class AddTask extends StatefulWidget {
   final TaskModel task;
@@ -18,7 +17,7 @@ class _AddState extends State<AddTask> {
   TextEditingController timeController = new TextEditingController();
   TextEditingController taskController = new TextEditingController();
   TextEditingController endTimeController = new TextEditingController();
-  int _priority = 3;
+  int _priority = 0;
   TaskModel newTask = new TaskModel();
   bool isValidTask = true;
   @override
@@ -46,52 +45,10 @@ class _AddState extends State<AddTask> {
             floatingActionButton: RaisedButton(
               onPressed: () async {
                 if (this.task == null) {
-                  newTask.title = taskController.text;
-                  isValidime(
-                      newTask.start, newTask.end, newTask.date, newTask.title);
-                  if (isValidTask == false) {
-                    showErrorDialog();
-                  } else {
-                    newTask.priority = _priority;
-                    newTask.isCompleted = false;
-                    if (newTask.start != null) {
-                      DateTime notificationTime = DateTime(
-                          newTask.date.year,
-                          newTask.date.month,
-                          newTask.date.day,
-                          newTask.start.hour,
-                          newTask.start.minute);
-                      await DatabaseProvider.db.insert(newTask).then((value){
-                      NotificationProvider.instance.scheduleNotification(
-                          value.title, notificationTime, value.priority,value.id);
-                      });
-                    }
-                    Navigator.pop(context);
-                  }
+                  saveTask(newTask, context);
                 } else {
-                  task.title = taskController.text;
-                  isValidime(task.start, task.end, task.date, task.title);
-                  if (isValidTask == false) {
-                    showErrorDialog();
-                  } else {
-                    task.priority = _priority;
-                    if (task.start != null) {
-                      DateTime notificationTime = DateTime(
-                          task.date.year,
-                          task.date.month,
-                          task.date.day,
-                          task.start.hour,
-                          task.start.minute);
-                      NotificationProvider.instance.cancelNotification(task.id);
-                    await DatabaseProvider.db.delete(task.id);
-                    await DatabaseProvider.db.insert(task).then((value){
-                      NotificationProvider.instance.scheduleNotification(
-                          value.title, notificationTime, value.priority,value.id);
-                      });
-                    Navigator.pop(context);
-                  }
+                  saveTask(task, context);
                 }
-              }
               },
               child: Text(
                 "Save Task",
@@ -145,6 +102,11 @@ class _AddState extends State<AddTask> {
                       child: TextField(
                         controller: taskController,
                         decoration: InputDecoration(labelText: "Task Title"),
+                        onChanged: (value) {
+                          task == null
+                              ? newTask.title = taskController.text
+                              : task.title = taskController.text;
+                        },
                       )),
                   Padding(
                       padding: EdgeInsets.only(
@@ -158,7 +120,7 @@ class _AddState extends State<AddTask> {
                                 color: Color(0xff8280FF),
                               ),
                               onPressed: () {
-                                datetimepicker().then((value) {
+                                datetimepicker(context).then((value) {
                                   this.task == null
                                       ? newTask.date = value
                                       : task.date = value;
@@ -189,7 +151,7 @@ class _AddState extends State<AddTask> {
                           color: Color(0xff8280FF),
                         ),
                         onPressed: () {
-                          timepicker().then((value) {
+                          timepicker(context).then((value) {
                             this.task == null
                                 ? newTask.start = value
                                 : task.start = value;
@@ -222,7 +184,7 @@ class _AddState extends State<AddTask> {
                           color: Color(0xff8280FF),
                         ),
                         onPressed: () {
-                          timepicker().then((value) {
+                          timepicker(context).then((value) {
                             this.task == null
                                 ? newTask.end = value
                                 : task.end = value;
@@ -330,74 +292,5 @@ class _AddState extends State<AddTask> {
                 ],
               ),
             )));
-  }
-
-  void showErrorDialog() {
-    showDialog(
-        context: context,
-        child: AlertDialog(
-          title: Text(
-            "Error..!",
-            style: TextStyle(color: Colors.red),
-          ),
-          content: Text(
-              "Title must not be left blank\nDate must be specified\nStart Time and End Time must be given\nStart Time should be less than End Time"),
-          actions: [
-            RaisedButton(
-                child: Text("Ok"),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                color: Color(0xff8280FF))
-          ],
-        ));
-  }
-
-  Future<DateTime> datetimepicker() async {
-    DateTime newDateTime = await showRoundedDatePicker(
-      context: context,
-      theme: ThemeData.dark(),
-      fontFamily: "Segoe UI",
-      firstDate: DateTime.now().subtract(Duration(days: 1)),
-      lastDate: DateTime(2040, 12, 31),
-      borderRadius: 16,
-    );
-    DateTime returnDateTime=DateTime(newDateTime.year,newDateTime.month,newDateTime.day);
-    return returnDateTime;
-  }
-
-  Future<TimeOfDay> timepicker() async {
-    TimeOfDay newTime = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.fromDateTime(DateTime.now()),
-    );
-    return newTime;
-  }
-  void isValidime(TimeOfDay start, TimeOfDay end, DateTime date, String text) {
-    if (start == null || end == null) {
-      isValidTask = false;
-    } else {
-      if (start.hour > end.hour) {
-        isValidTask = false;
-      } else if (start.hour == end.hour) {
-        if (start.minute > end.minute) {
-          isValidTask = false;
-        } else {
-          isValidTask = true;
-        }
-      } else {
-        isValidTask = true;
-      }
-    }
-    if (date == null) {
-      isValidTask = false;
-    } else {
-      isValidTask = true;
-    }
-    if (text == null || text == "") {
-      isValidTask = false;
-    } else {
-      isValidTask = true;
-    }
   }
 }

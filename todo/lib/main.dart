@@ -132,7 +132,7 @@ class _ToDoState extends State<ToDoHome> with TickerProviderStateMixin {
           )),
       body: TabBarView(controller: _tabController, children: [
         Container(
-            padding: EdgeInsets.only(top:10),
+            padding: EdgeInsets.only(top: 10),
             color: Colors.white,
             child: FutureBuilder(
                 future: DatabaseProvider.db.getSortedtasks(),
@@ -164,7 +164,7 @@ class _ToDoState extends State<ToDoHome> with TickerProviderStateMixin {
                   }
                 })),
         Container(
-            padding: EdgeInsets.only(top:10),
+            padding: EdgeInsets.only(top: 10),
             color: Colors.white,
             child: FutureBuilder(
                 future: DatabaseProvider.db.getSortedtasks(),

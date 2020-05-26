@@ -22,12 +22,16 @@ class _TaskState extends State<Task> {
         date.month.toString() +
         "-" +
         date.year.toString() +
-        "  " ;
-    String start=task.start.hour<12?task.start.hour.toString():(task.start.hour-12).toString();
-    String end=task.end.hour<12?task.end.hour.toString():(task.end.hour-12).toString();
+        "  ";
+    String start = task.start.hour > 12
+        ? (task.start.hour - 12).toString()
+        : task.start.hour.toString();
+    String end = task.end.hour > 12
+        ? (task.end.hour - 12).toString()
+        : task.end.hour.toString();
     String duration = "$start:${task.start.minute} - $end:${task.end.minute}";
-    duration += task.end.hour > 12 ? " PM" : " AM";
-    start += task.start.hour < 12 ? " AM" : " PM";
+    duration += task.end.hour >= 12 ? " PM" : " AM";
+    start += task.start.hour >= 12 ? " PM" : " AM";
     return Column(
       children: [
         SizedBox(
@@ -39,12 +43,21 @@ class _TaskState extends State<Task> {
               width: 20,
             ),
             RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(text: time,style: TextStyle(fontWeight: FontWeight.w300, fontSize: 18,color:Colors.black),),
-                  TextSpan(text: start,style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18,color:Color(0xff8280FF)))
-                ]
-              ),
+              text: TextSpan(children: [
+                TextSpan(
+                  text: time,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w300,
+                      fontSize: 18,
+                      color: Colors.black),
+                ),
+                TextSpan(
+                    text: start,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 18,
+                        color: Color(0xff8280FF)))
+              ]),
             ),
             SizedBox(
               width: 20,
@@ -72,7 +85,9 @@ class _TaskState extends State<Task> {
                   onPressed: () {
                     task.isCompleted = !task.isCompleted;
                     DatabaseProvider.db.delete(task.id);
-                    DatabaseProvider.db.insert(task).then((value) => NotificationProvider.instance.cancelNotification(task.id));
+                    DatabaseProvider.db.insert(task).then((value) =>
+                        NotificationProvider.instance
+                            .cancelNotification(task.id));
                     setState(() {});
                     widget.notifyParent();
                   }),
@@ -83,18 +98,18 @@ class _TaskState extends State<Task> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width:MediaQuery.of(context).size.width/1.75,
-                    child:Text(
-                    task.title,
-                    maxLines: null,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xff8280FF),
-                        fontSize: 18,
-                        decoration: task.isCompleted
-                            ? TextDecoration.lineThrough
-                            : null),
-                  )),
+                      width: MediaQuery.of(context).size.width / 1.75,
+                      child: Text(
+                        task.title,
+                        maxLines: null,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xff8280FF),
+                            fontSize: 18,
+                            decoration: task.isCompleted
+                                ? TextDecoration.lineThrough
+                                : null),
+                      )),
                   SizedBox(
                     height: 10,
                   ),
@@ -108,13 +123,21 @@ class _TaskState extends State<Task> {
             Row(
               children: [
                 IconButton(
-                    iconSize: 25,
-                    icon:this.task.priority == 3
-                        ? Image.asset("assets/icons/icon_high.png",color: Colors.red,)
-                        : this.task.priority == 2
-                            ? Image.asset("assets/icons/icon_medium.png",color:Colors.orange[700])
-                            : Image.asset("assets/icons/icon_low.png",color: Colors.yellow[600],),
-                    onPressed: (){},),
+                  iconSize: 25,
+                  icon: this.task.priority == 3
+                      ? Image.asset(
+                          "assets/icons/icon_high.png",
+                          color: Colors.red,
+                        )
+                      : this.task.priority == 2
+                          ? Image.asset("assets/icons/icon_medium.png",
+                              color: Colors.orange[700])
+                          : Image.asset(
+                              "assets/icons/icon_low.png",
+                              color: Colors.yellow[600],
+                            ),
+                  onPressed: () {},
+                ),
                 IconButton(
                   icon: Icon(
                     Icons.edit,

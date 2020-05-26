@@ -24,7 +24,7 @@ class NotificationProvider {
   }
 
   Future<void> scheduleNotification(
-      String title, DateTime date, int priority,int id) async {
+      String title, DateTime date, int priority, int id) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'Todo Channel',
       'Tasks Channel',
@@ -36,16 +36,17 @@ class NotificationProvider {
       styleInformation: DefaultStyleInformation(true, true),
     );
     String body = "Task Reminder.";
-    body+=" Priority: ";
-    body +=
-        priority == 1 ? "Low" : priority == 2 ? "Medium" : "High";
+    body += " Priority: ";
+    body += priority == 1 ? "Low" : priority == 2 ? "Medium" : "High";
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
     NotificationDetails platformChannelSpecifics = NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.schedule(
-        id, '$title', body, date, platformChannelSpecifics,androidAllowWhileIdle: true);
+        id, '$title', body, date, platformChannelSpecifics,
+        androidAllowWhileIdle: true);
   }
-  Future<void> cancelNotification(int id)async{
+
+  Future<void> cancelNotification(int id) async {
     await flutterLocalNotificationsPlugin.cancel(id);
   }
 }

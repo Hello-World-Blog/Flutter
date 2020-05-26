@@ -1,0 +1,122 @@
+Flutter crash report.
+Please report a bug at https://github.com/flutter/flutter/issues.
+
+## command
+
+flutter build apk --release --split-per-abi
+
+## exception
+
+FileSystemException: FileSystemException: Cannot open file, path = 'D:\TarunNanduri\TarunNanduri\blog\todo\windows\flutter\generated_plugin_registrant.cc' (OS Error: The process cannot access the file because it is being used by another process.
+, errno = 32)
+
+```
+#0      _File.throwIfError (dart:io/file_impl.dart:635:7)
+#1      _File.openSync (dart:io/file_impl.dart:479:5)
+#2      _File.writeAsBytesSync (dart:io/file_impl.dart:604:31)
+#3      _File.writeAsStringSync (dart:io/file_impl.dart:628:5)
+#4      ForwardingFile.writeAsStringSync (package:file/src/forwarding/forwarding_file.dart:154:16)
+#5      ErrorHandlingFile.writeAsStringSync.<anonymous closure> (package:flutter_tools/src/base/error_handling_file_system.dart:186:22)
+#6      _runSync (package:flutter_tools/src/base/error_handling_file_system.dart:351:14)
+#7      ErrorHandlingFile.writeAsStringSync (package:flutter_tools/src/base/error_handling_file_system.dart:185:5)
+#8      _renderTemplateToFile (package:flutter_tools/src/plugins.dart:28:8)
+#9      _writeCppPluginRegistrant (package:flutter_tools/src/plugins.dart:924:3)
+#10     _writeWindowsPluginFiles (package:flutter_tools/src/plugins.dart:913:9)
+#11     injectPlugins (package:flutter_tools/src/plugins.dart:1084:11)
+<asynchronous suspension>
+#12     FlutterProject.ensureReadyForPlatformSpecificTooling (package:flutter_tools/src/project.dart:254:11)
+<asynchronous suspension>
+#13     FlutterCommand.verifyThenRunCommand (package:flutter_tools/src/runner/flutter_command.dart:782:21)
+<asynchronous suspension>
+#14     FlutterCommand.run.<anonymous closure> (package:flutter_tools/src/runner/flutter_command.dart:694:33)
+<asynchronous suspension>
+#15     FlutterCommand.run.<anonymous closure> (package:flutter_tools/src/runner/flutter_command.dart)
+#16     AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:150:29)
+#17     _rootRun (dart:async/zone.dart:1190:13)
+#18     _CustomZone.run (dart:async/zone.dart:1093:19)
+#19     _runZoned (dart:async/zone.dart:1630:10)
+#20     runZoned (dart:async/zone.dart:1550:10)
+#21     AppContext.run (package:flutter_tools/src/base/context.dart:149:18)
+#22     FlutterCommand.run (package:flutter_tools/src/runner/flutter_command.dart:684:20)
+#23     CommandRunner.runCommand (package:args/command_runner.dart:197:27)
+#24     FlutterCommandRunner.runCommand.<anonymous closure> (package:flutter_tools/src/runner/flutter_command_runner.dart:339:21)
+<asynchronous suspension>
+#25     FlutterCommandRunner.runCommand.<anonymous closure> (package:flutter_tools/src/runner/flutter_command_runner.dart)
+#26     AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:150:29)
+#27     _rootRun (dart:async/zone.dart:1190:13)
+#28     _CustomZone.run (dart:async/zone.dart:1093:19)
+#29     _runZoned (dart:async/zone.dart:1630:10)
+#30     runZoned (dart:async/zone.dart:1550:10)
+#31     AppContext.run (package:flutter_tools/src/base/context.dart:149:18)
+#32     FlutterCommandRunner.runCommand (package:flutter_tools/src/runner/flutter_command_runner.dart:289:19)
+<asynchronous suspension>
+#33     CommandRunner.run.<anonymous closure> (package:args/command_runner.dart:112:25)
+#34     new Future.sync (dart:async/future.dart:222:31)
+#35     CommandRunner.run (package:args/command_runner.dart:112:14)
+#36     FlutterCommandRunner.run (package:flutter_tools/src/runner/flutter_command_runner.dart:232:18)
+#37     run.<anonymous closure>.<anonymous closure> (package:flutter_tools/runner.dart:61:22)
+#38     _rootRun (dart:async/zone.dart:1190:13)
+#39     _CustomZone.run (dart:async/zone.dart:1093:19)
+#40     _runZoned (dart:async/zone.dart:1630:10)
+#41     runZonedGuarded (dart:async/zone.dart:1618:12)
+#42     runZoned (dart:async/zone.dart:1547:12)
+#43     run.<anonymous closure> (package:flutter_tools/runner.dart:59:18)
+<asynchronous suspension>
+#44     run.<anonymous closure> (package:flutter_tools/runner.dart)
+#45     runInContext.runnerWrapper (package:flutter_tools/src/context_runner.dart:62:18)
+<asynchronous suspension>
+#46     runInContext.runnerWrapper (package:flutter_tools/src/context_runner.dart)
+#47     AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:150:29)
+#48     _rootRun (dart:async/zone.dart:1190:13)
+#49     _CustomZone.run (dart:async/zone.dart:1093:19)
+#50     _runZoned (dart:async/zone.dart:1630:10)
+#51     runZoned (dart:async/zone.dart:1550:10)
+#52     AppContext.run (package:flutter_tools/src/base/context.dart:149:18)
+#53     runInContext (package:flutter_tools/src/context_runner.dart:65:24)
+#54     run (package:flutter_tools/runner.dart:46:10)
+#55     main (package:flutter_tools/executable.dart:68:9)
+#56     main (file:///D:/C_Drive_Clone/src/flutter/packages/flutter_tools/bin/flutter_tools.dart:8:3)
+#57     _startIsolate.<anonymous closure> (dart:isolate-patch/isolate_patch.dart:299:32)
+#58     _RawReceivePortImpl._handleMessage (dart:isolate-patch/isolate_patch.dart:168:12)
+```
+
+## flutter doctor
+
+```
+[✓] Flutter (Channel master, 1.19.0-2.0.pre.143, on Microsoft Windows [Version 10.0.18363.836], locale en-IN)
+    • Flutter version 1.19.0-2.0.pre.143 at D:\C_Drive_Clone\src\flutter
+    • Framework revision 9d58a87066 (2 days ago), 2020-05-22 22:37:01 -0700
+    • Engine revision 9ce1e5c5c7
+    • Dart version 2.9.0 (build 2.9.0-10.0.dev 7706afbcf5)
+
+[✓] Android toolchain - develop for Android devices (Android SDK version 29.0.3)
+    • Android SDK at C:\Users\tarun\AppData\Local\Android\sdk
+    • Platform android-29, build-tools 29.0.3
+    • Java binary at: C:\Program Files\Android\Android Studio\jre\bin\java
+    • Java version OpenJDK Runtime Environment (build 1.8.0_212-release-1586-b04)
+    • All Android licenses accepted.
+
+[✗] Chrome - develop for the web (Cannot find Chrome executable at .\Google\Chrome\Application\chrome.exe)
+    ! Cannot find Chrome. Try setting CHROME_EXECUTABLE to a Chrome executable.
+
+[✓] Visual Studio - develop for Windows (Visual Studio Enterprise 2019 16.5.4)
+    • Visual Studio at C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise
+    • Visual Studio Enterprise 2019 version 16.5.30011.22
+
+[✓] Android Studio (version 3.6)
+    • Android Studio at C:\Program Files\Android\Android Studio
+    • Flutter plugin version 45.0.1
+    • Dart plugin version 192.7761
+    • Java version OpenJDK Runtime Environment (build 1.8.0_212-release-1586-b04)
+
+[✓] VS Code, 64-bit edition (version 1.45.1)
+    • VS Code at C:\Program Files\Microsoft VS Code
+    • Flutter extension version 3.10.2
+
+[✓] Connected device (3 available)
+    • moto x4    • ZY224WF9T4 • android-arm64  • Android 9 (API 28)
+    • Windows    • Windows    • windows-x64    • Microsoft Windows [Version 10.0.18363.836]
+    • Web Server • web-server • web-javascript • Flutter Tools
+
+! Doctor found issues in 1 category.
+```
