@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todo/pages/add_a_task.dart';
 import 'package:todo/utils/database_provider.dart';
 import 'package:todo/utils/notification_provider.dart';
+import 'package:todo/widgets/drawer.dart';
 import 'package:todo/widgets/task.dart';
 import 'package:flutter/services.dart';
 
@@ -40,7 +41,6 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
             iconTheme: IconThemeData(color: Color(0xff8280FF)),
             primaryColor: Color(0xff8280FF),
-            backgroundColor: Colors.white,
             fontFamily: "Segoe UI",
             inputDecorationTheme: InputDecorationTheme(
               border: UnderlineInputBorder(),
@@ -82,9 +82,11 @@ class _ToDoState extends State<ToDoHome> with TickerProviderStateMixin {
         iconSize: 40,
         color: Color(0xff8280FF),
       ),
+      drawer: CustomDrawer(),
       appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.white,
+          iconTheme: IconThemeData(color: Color(0xff8280FF)),
           title: Text(
             "Todo.",
             style: TextStyle(
@@ -100,6 +102,7 @@ class _ToDoState extends State<ToDoHome> with TickerProviderStateMixin {
                   style: TextStyle(
                       color: Colors.grey[700], fontWeight: FontWeight.w400),
                 ),
+                SizedBox(width: 10,),
                 Icon(
                       Icons.calendar_today,
                       color: Color(0xff8280FF),
@@ -139,21 +142,16 @@ class _ToDoState extends State<ToDoHome> with TickerProviderStateMixin {
                     return ListView.builder(
                         itemCount: snapshot.data.length,
                         itemBuilder: (context, i) {
-                          var item = snapshot.data[i];
-                          return Dismissible(
-                              confirmDismiss: (direction) =>
-                                  showDismissDialog(context, item),
-                              direction: DismissDirection.startToEnd,
-                              background: Container(
-                                color: Colors.red,
-                                child: Icon(
-                                  Icons.delete,
-                                  size: 30,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              key: ObjectKey(item),
-                              child: Task(item, notifyParent: refresh));
+                                              print(snapshot.data[i].title);
+                          if(snapshot.data[i].isArchived==false){
+                          return GestureDetector(
+                            child:Task(snapshot.data[i], notifyParent: refresh),
+                            onTap: () => archiveTask(context,snapshot.data[i]),
+                            );
+                          }
+                          else{
+                            return SizedBox();
+                          }
                         });
                   } else {
                     return Center(
@@ -171,10 +169,9 @@ class _ToDoState extends State<ToDoHome> with TickerProviderStateMixin {
                     return ListView.builder(
                         itemCount: snapshot.data.length,
                         itemBuilder: (context, i) {
-                          var item = snapshot.data[i];
-                          if (snapshot.data[i].isCompleted == true) {
+                          if (snapshot.data[i].isCompleted == true && snapshot.data[i].isArchived ==false) {
                             return Task(
-                              item,
+                              snapshot.data[i],
                               notifyParent: refresh,
                             );
                           } else {
@@ -191,17 +188,18 @@ class _ToDoState extends State<ToDoHome> with TickerProviderStateMixin {
     ));
   }
 
-  Future<bool> showDismissDialog(context, item) async {
-    showDialog(
-      context: context,
-      child: AlertDialog(
+  void archiveTask(context,item){
+    showDialog(context: context,
+    child: AlertDialog(
         actions: [
           IconButton(
               icon: Icon(Icons.check, color: Colors.green),
               onPressed: () async {
+                item.isArchived=true;
                 await DatabaseProvider.db
-                    .delete(item.id)
-                    .then((value) => setState(() {}));
+                    ..delete(item.id)
+                    ..insert(item)
+                    .then((value) => setState((){}));
                 await NotificationProvider.instance.cancelNotification(item.id);
                 Navigator.pop(context);
                 return true;
@@ -217,10 +215,9 @@ class _ToDoState extends State<ToDoHome> with TickerProviderStateMixin {
             },
           ),
         ],
-        content: Text("Would you like to delete the Task ?"),
+        content: Text("Would you like to Archive the Task ?"),
       ),
     );
-    return false;
   }
 
   void refresh() {

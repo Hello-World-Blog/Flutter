@@ -8,7 +8,7 @@ import 'package:todo/utils/notification_provider.dart';
 class Task extends StatefulWidget {
   final TaskModel task;
   final Function notifyParent;
-  Task(this.task, {Key key, @required this.notifyParent}) : super(key: key);
+  Task(this.task, {Key key,this.notifyParent}) : super(key: key);
   _TaskState createState() => _TaskState(this.task);
 }
 
@@ -65,14 +65,11 @@ class _TaskState extends State<Task> {
             Expanded(child: Divider(color: Colors.grey[200], thickness: 1)),
           ],
         ),
-        SizedBox(
-          height: 15,
-        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(children: [
-              IconButton(
+              task.isArchived==false?IconButton(
                   icon: task.isCompleted
                       ? Icon(
                           Icons.check_circle,
@@ -86,11 +83,15 @@ class _TaskState extends State<Task> {
                     task.isCompleted = !task.isCompleted;
                     DatabaseProvider.db.delete(task.id);
                     DatabaseProvider.db.insert(task).then((value) =>
-                        NotificationProvider.instance
-                            .cancelNotification(task.id));
+                        task.isCompleted?NotificationProvider.instance
+                            .cancelNotification(task.id):
+                            NotificationProvider.instance.scheduleNotification(task.title, task.date, task.priority, task.id))
+                            ;
                     setState(() {});
                     widget.notifyParent();
-                  }),
+                  }):SizedBox(
+                    width: 10,
+                  ),
               SizedBox(
                 width: 10,
               ),
@@ -138,6 +139,8 @@ class _TaskState extends State<Task> {
                             ),
                   onPressed: () {},
                 ),
+                SizedBox(width: 10,),
+                Column(children: [
                 IconButton(
                   icon: Icon(
                     Icons.edit,
@@ -151,14 +154,53 @@ class _TaskState extends State<Task> {
                   },
                   color: Color(0xff8280FF),
                 ),
+                IconButton(
+                  icon: Icon(
+                    Icons.delete,
+                    size: 25,
+                  ),
+                  onPressed: () {
+                    showDismissDialog(context, task);
+                  },
+                  color: Colors.red,
+                ),
+              ])
               ],
             )
           ],
         ),
-        SizedBox(
-          height: 20,
-        )
       ],
     );
+  }
+  Future<bool> showDismissDialog(context, item) async {
+    showDialog(
+      context: context,
+      child: AlertDialog(
+        actions: [
+          IconButton(
+              icon: Icon(Icons.check, color: Colors.green),
+              onPressed: () async {
+                await DatabaseProvider.db
+                    .delete(item.id)
+                    .then((value) => widget.notifyParent());
+                await NotificationProvider.instance.cancelNotification(item.id);
+                Navigator.pop(context);
+                return true;
+              }),
+          IconButton(
+            icon: Icon(
+              Icons.error,
+              color: Colors.red,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+              return false;
+            },
+          ),
+        ],
+        content: Text("Would you like to delete the Task ?"),
+      ),
+    );
+    return false;
   }
 }
