@@ -12,8 +12,10 @@ void saveTask(task, context) async {
     if (task.start != null) {
       DateTime notificationTime = DateTime(task.date.year, task.date.month,
           task.date.day, task.start.hour, task.start.minute);
-      NotificationProvider.instance.cancelNotification(task.id);
-      await DatabaseProvider.db.delete(task.id);
+      if(task.id!=null){
+        NotificationProvider.instance.cancelNotification(task.id);
+        await DatabaseProvider.db.delete(task.id);
+      }
       await DatabaseProvider.db.insert(task).then((value) {
         NotificationProvider.instance.scheduleNotification(
             value.title, notificationTime, value.priority, value.id);

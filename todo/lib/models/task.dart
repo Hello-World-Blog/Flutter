@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo/utils/database_provider.dart';
+import 'package:todo/utils/time_util.dart';
 //Import Database Provider
 
 class TaskModel with ChangeNotifier {
@@ -26,9 +27,9 @@ class TaskModel with ChangeNotifier {
       DatabaseProvider.COLUMN_DATE:
           date == null ? null : date.toIso8601String(),
       DatabaseProvider.COLUMN_START:
-          start == null ? null : "${start.hour}:${start.minute}",
+          start == null ? null : toMinutes(start),
       DatabaseProvider.COLUMN_END:
-          end == null ? null : "${end.hour}:${end.minute}",
+          end == null ? null : toMinutes(end),
       DatabaseProvider.COLUMN_COMPLETED: isCompleted ? 1 : 0,
       DatabaseProvider.COLUMN_PRIORITY: priority
     };
@@ -48,15 +49,10 @@ class TaskModel with ChangeNotifier {
         : DateTime.parse(map[DatabaseProvider.COLUMN_DATE]);
     start = map[DatabaseProvider.COLUMN_START] == null
         ? null
-        : TimeOfDay(
-            hour: int.parse(map[DatabaseProvider.COLUMN_START].split(":")[0]),
-            minute:
-                int.parse(map[DatabaseProvider.COLUMN_START].split(":")[1]));
+        : toTime(map[DatabaseProvider.COLUMN_START]);
     end = map[DatabaseProvider.COLUMN_END] == null
         ? null
-        : TimeOfDay(
-            hour: int.parse(map[DatabaseProvider.COLUMN_END].split(":")[0]),
-            minute: int.parse(map[DatabaseProvider.COLUMN_END].split(":")[1]));
+        : toTime(map[DatabaseProvider.COLUMN_END]);
     isCompleted = map[DatabaseProvider.COLUMN_COMPLETED] == 1;
     priority = map[DatabaseProvider.COLUMN_PRIORITY];
   }

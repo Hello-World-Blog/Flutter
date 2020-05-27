@@ -45,8 +45,8 @@ class DatabaseProvider {
         "$COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT,"
         "$COLUMN_TITLE TEXT,"
         "$COLUMN_DATE TEXT,"
-        "$COLUMN_START TEXT,"
-        "$COLUMN_END TEXT,"
+        "$COLUMN_START INT,"
+        "$COLUMN_END INT,"
         "$COLUMN_COMPLETED INT,"
         "$COLUMN_PRIORITY INT"
         ")");
