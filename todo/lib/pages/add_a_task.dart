@@ -47,10 +47,8 @@ class _AddState extends State<AddTask> {
               onPressed: () async {
                 if (this.task == null) {
                   saveTask(newTask, context);
-                  Navigator.pop(context);
                 } else {
                   saveTask(task, context);
-                  Navigator.pop(context);
                 }
               },
               child: Text(

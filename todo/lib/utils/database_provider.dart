@@ -17,7 +17,6 @@ class DatabaseProvider {
   static const COLUMN_PRIORITY = 'priority';
   static const COLUMN_DATE = 'date';
   static const COLUMN_COMPLETED = 'isCompleted';
-  static const COLUMN_ARCHIVED = 'isArchived';
 
   DatabaseProvider._private();
 
@@ -49,7 +48,6 @@ class DatabaseProvider {
         "$COLUMN_START INT,"
         "$COLUMN_END INT,"
         "$COLUMN_COMPLETED INT,"
-        "$COLUMN_ARCHIVED INT,"
         "$COLUMN_PRIORITY INT"
         ")");
   }
@@ -84,16 +82,6 @@ class DatabaseProvider {
     var tasks = await db.rawQuery(
         'SELECT * FROM $TASKS_TABLE ORDER BY $COLUMN_DATE ASC,$COLUMN_START ASC');
     return List.generate(tasks.length, (index) {
-      return TaskModel.fromMap(tasks[index]);
-    });
-  }
-
-  Future<List<TaskModel>> getArchivedtasks() async{
-    final db= await database;
-    var tasks= await db.rawQuery(
-      'SELECT * FROM $TASKS_TABLE WHERE $COLUMN_ARCHIVED=1'
-    );
-    return List.generate(tasks.length, (index){
       return TaskModel.fromMap(tasks[index]);
     });
   }

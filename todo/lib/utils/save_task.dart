@@ -20,6 +20,7 @@ void saveTask(task, context) async {
         NotificationProvider.instance.scheduleNotification(
             value.title, notificationTime, value.priority, value.id);
       });
+      Navigator.pop(context);
     }
   }
 }

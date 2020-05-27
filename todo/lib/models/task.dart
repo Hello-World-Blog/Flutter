@@ -10,7 +10,6 @@ class TaskModel with ChangeNotifier {
   TimeOfDay start;
   TimeOfDay end;
   bool isCompleted;
-  bool isArchived;
   int priority;
 
   TaskModel(
@@ -20,7 +19,6 @@ class TaskModel with ChangeNotifier {
       this.start,
       this.end,
       this.isCompleted: false,
-      this.isArchived :false,
       this.priority: 0});
 
   Map<String, dynamic> toMap() {
@@ -33,7 +31,6 @@ class TaskModel with ChangeNotifier {
       DatabaseProvider.COLUMN_END:
           end == null ? null : toMinutes(end),
       DatabaseProvider.COLUMN_COMPLETED: isCompleted ? 1 : 0,
-      DatabaseProvider.COLUMN_ARCHIVED: isArchived? 1:0,
       DatabaseProvider.COLUMN_PRIORITY: priority
     };
 
@@ -57,7 +54,6 @@ class TaskModel with ChangeNotifier {
         ? null
         : toTime(map[DatabaseProvider.COLUMN_END]);
     isCompleted = map[DatabaseProvider.COLUMN_COMPLETED] == 1;
-    isArchived = map[DatabaseProvider.COLUMN_ARCHIVED] ==1;
     priority = map[DatabaseProvider.COLUMN_PRIORITY];
   }
 }
