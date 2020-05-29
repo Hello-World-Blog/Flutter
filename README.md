@@ -5,4 +5,4 @@ Facebook Page : <a href="https://fb.com/HelloWorldFB">Hello World</a>
 
 ## Projects
 
-* ToDo. - Task Scheduler Application in Flutter.
+* <a href="https://github.com/TarunNanduri/Blog/tree/master/todo">ToDo</a>. - Task Scheduler Application in Flutter.
