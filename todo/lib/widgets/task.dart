@@ -8,7 +8,7 @@ import 'package:todo/utils/notification_provider.dart';
 class Task extends StatefulWidget {
   final TaskModel task;
   final Function notifyParent;
-  Task(this.task, {Key key, @required this.notifyParent}) : super(key: key);
+  Task(this.task, {Key key, this.notifyParent}) : super(key: key);
   _TaskState createState() => _TaskState(this.task);
 }
 

@@ -101,10 +101,10 @@ class _ToDoState extends State<ToDoHome> with TickerProviderStateMixin {
                       color: Colors.grey[700], fontWeight: FontWeight.w400),
                 ),
                 Icon(
-                      Icons.calendar_today,
-                      color: Color(0xff8280FF),
-                      size: 15,
-                    ),
+                  Icons.calendar_today,
+                  color: Color(0xff8280FF),
+                  size: 15,
+                ),
                 SizedBox(
                   width: 10,
                 )
