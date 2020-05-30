@@ -29,7 +29,10 @@ class TasksProvider with ChangeNotifier {
   }
 
   List<TaskModel> get completedTasks {
-    return _items.where((item) => item.isCompleted && !item.isArchived && !item.isDeleted).toList();
+    return _items
+        .where(
+            (item) => item.isCompleted && !item.isArchived && !item.isDeleted)
+        .toList();
   }
 
   List<TaskModel> get archivedTasks {
@@ -55,7 +58,12 @@ class TasksProvider with ChangeNotifier {
     });
   }
 
-  void archivedTask(int id) {
+  void toggleSoftDelete(int id) {
+    _items.firstWhere((task) => task.id == id).toggleIsDeleted();
+    notifyListeners();
+  }
+
+  void toggleArchiveTask(int id) {
     _items.firstWhere((task) => task.id == id).toggleIsArchived();
     notifyListeners();
   }

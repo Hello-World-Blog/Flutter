@@ -6,6 +6,7 @@ import 'package:todo/pages/add_a_task.dart';
 import 'package:todo/utils/notification_provider.dart';
 
 import '../models/task.dart';
+import '../providers/tasks_provider.dart';
 import 'dialogs.dart';
 
 class Task extends StatelessWidget {
@@ -145,47 +146,71 @@ class Task extends StatelessWidget {
                   onPressed: () {},
                 ),
                 Column(children: [
-                IconButton(
-                  icon: task.isDeleted||task.isArchived? 
-                  Icon(Icons.restore,size: 25,color: Colors.green,)
-                  :Icon(
-                    Icons.edit,
-                    size: 25,
+                  IconButton(
+                    icon: task.isDeleted || task.isArchived
+                        ? Icon(
+                            Icons.restore,
+                            size: 25,
+                            color: Colors.green,
+                          )
+                        : Icon(
+                            Icons.edit,
+                            size: 25,
+                          ),
+                    onPressed: () {
+                      if (task.isDeleted) {
+                        Provider.of<TasksProvider>(context, listen: false)
+                            .toggleSoftDelete(task.id);
+                        DateTime notificationTime = DateTime(
+                            task.date.year,
+                            task.date.month,
+                            task.date.day,
+                            task.start.hour,
+                            task.start.minute);
+                        NotificationProvider.instance.scheduleNotification(
+                            task.title,
+                            notificationTime,
+                            task.priority,
+                            task.id);
+                      }
+                      if (task.isArchived) {
+                        Provider.of<TasksProvider>(context, listen: false)
+                            .toggleArchiveTask(task.id);
+                        DateTime notificationTime = DateTime(
+                            task.date.year,
+                            task.date.month,
+                            task.date.day,
+                            task.start.hour,
+                            task.start.minute);
+                        NotificationProvider.instance.scheduleNotification(
+                            task.title,
+                            notificationTime,
+                            task.priority,
+                            task.id);
+                      } else {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => AddTask(
+                                  task: task,
+                                )));
+                      }
+                    },
+                    color: Color(0xff8280FF),
                   ),
-                  onPressed: () {
-                    if(task.isDeleted){
-                      task.toggleIsDeleted();
-                      DateTime notificationTime=DateTime(task.date.year,task.date.month,task.date.day,task.start.hour,task.start.minute);
-                      NotificationProvider.instance.scheduleNotification(task.title, notificationTime, task.priority, task.id);
-                    }
-                    if(task.isArchived){
-                        task.toggleIsArchived();
-                      DateTime notificationTime=DateTime(task.date.year,task.date.month,task.date.day,task.start.hour,task.start.minute);
-                      NotificationProvider.instance.scheduleNotification(task.title, notificationTime, task.priority, task.id);
-                    }
-                    else{
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => AddTask(
-                              task: task,
-                            )));
-                    }
-                  },
-                  color: Color(0xff8280FF),
-                ),
-                IconButton(
-                  icon:task.isDeleted?
-                  Icon(Icons.delete_forever,
-                  size: 25,
-                  )
-                  :Icon(
-                    Icons.delete,
-                    size: 25,
+                  IconButton(
+                    icon: task.isDeleted
+                        ? Icon(
+                            Icons.delete_forever,
+                            size: 25,
+                          )
+                        : Icon(
+                            Icons.delete,
+                            size: 25,
+                          ),
+                    onPressed: () {
+                      showDismissDialog(context, task, task.isDeleted);
+                    },
+                    color: Colors.red,
                   ),
-                  onPressed: () {
-                    showDismissDialog(context, task, task.isDeleted);
-                  },
-                  color: Colors.red,
-                ),
                 ]),
               ],
             )
