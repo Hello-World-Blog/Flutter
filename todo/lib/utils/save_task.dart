@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-
-import 'database_provider.dart';
+import 'package:provider/provider.dart';
+import '../providers/tasks_provider.dart';
 import 'notification_provider.dart';
 
 bool isValidTask = false;
 void saveTask(task, context) async {
+  var allTasks = Provider.of<TasksProvider>(context, listen: false);
   isValidime(task.start, task.end, task.date, task.title);
   if (isValidTask == false) {
     showErrorDialog(context);
@@ -12,11 +13,11 @@ void saveTask(task, context) async {
     if (task.start != null) {
       DateTime notificationTime = DateTime(task.date.year, task.date.month,
           task.date.day, task.start.hour, task.start.minute);
-      if(task.id!=null){
+      if (task.id != null) {
         NotificationProvider.instance.cancelNotification(task.id);
-        await DatabaseProvider.db.delete(task.id);
+        allTasks.deleteTask(task.id);
       }
-      await DatabaseProvider.db.insert(task).then((value) {
+      await allTasks.addTask(task).then((value) {
         NotificationProvider.instance.scheduleNotification(
             value.title, notificationTime, value.priority, value.id);
       });
