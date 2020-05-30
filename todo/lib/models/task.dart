@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo/utils/database_provider.dart';
 import 'package:todo/utils/time_util.dart';
-//Import Database Provider
 
 class TaskModel with ChangeNotifier {
   int id;
@@ -26,10 +25,8 @@ class TaskModel with ChangeNotifier {
       DatabaseProvider.COLUMN_TITLE: title,
       DatabaseProvider.COLUMN_DATE:
           date == null ? null : date.toIso8601String(),
-      DatabaseProvider.COLUMN_START:
-          start == null ? null : toMinutes(start),
-      DatabaseProvider.COLUMN_END:
-          end == null ? null : toMinutes(end),
+      DatabaseProvider.COLUMN_START: start == null ? null : toMinutes(start),
+      DatabaseProvider.COLUMN_END: end == null ? null : toMinutes(end),
       DatabaseProvider.COLUMN_COMPLETED: isCompleted ? 1 : 0,
       DatabaseProvider.COLUMN_PRIORITY: priority
     };
@@ -55,5 +52,11 @@ class TaskModel with ChangeNotifier {
         : toTime(map[DatabaseProvider.COLUMN_END]);
     isCompleted = map[DatabaseProvider.COLUMN_COMPLETED] == 1;
     priority = map[DatabaseProvider.COLUMN_PRIORITY];
+  }
+
+  void toggleIsCompleted() {
+    isCompleted = !isCompleted;
+    DatabaseProvider.db.update(this);
+    notifyListeners();
   }
 }
