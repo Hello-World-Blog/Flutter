@@ -173,7 +173,7 @@ class Task extends StatelessWidget {
                             task.priority,
                             task.id);
                       }
-                      if (task.isArchived) {
+                      else if (task.isArchived) {
                         Provider.of<TasksProvider>(context, listen: false)
                             .toggleArchiveTask(task.id);
                         DateTime notificationTime = DateTime(
