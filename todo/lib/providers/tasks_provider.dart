@@ -29,7 +29,7 @@ class TasksProvider with ChangeNotifier {
   }
 
   List<TaskModel> get completedTasks {
-    return _items.where((item) => item.isCompleted).toList();
+    return _items.where((item) => item.isCompleted && !item.isArchived && !item.isDeleted).toList();
   }
 
   List<TaskModel> get archivedTasks {

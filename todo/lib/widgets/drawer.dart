@@ -44,7 +44,30 @@ class CustomDrawer extends StatelessWidget {
             Navigator.of(context).push(MaterialPageRoute(builder: (context) => DeletePage(),));
           },
         ),
-        Divider()
+        Divider(),
+        ListTile(
+          leading: Icon(
+            Icons.info,
+            color: Colors.green,
+          ),
+          title: Text(
+            "About",
+            style: TextStyle(color: Colors.green, fontSize: 20),
+          ),
+          onTap: () {
+            Navigator.pop(context);
+            showAboutDialog(context: context,
+            applicationName: "ToDo.",
+            applicationIcon: Image.asset("assets/icons/logo.png",height:50,width:50),
+            children: [
+              Text("Task Scheduler."),
+              Text("You will now never miss a thing..!"),
+              Text("Your privacy is our concern, everything lies in your mobile")
+            ],
+            );
+          },
+        ),
+        Divider(),
       ],
     ));
   }

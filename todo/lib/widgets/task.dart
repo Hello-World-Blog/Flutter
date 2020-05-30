@@ -146,7 +146,7 @@ class Task extends StatelessWidget {
                 ),
                 Column(children: [
                 IconButton(
-                  icon: task.isDeleted? 
+                  icon: task.isDeleted||task.isArchived? 
                   Icon(Icons.restore,size: 25,color: Colors.green,)
                   :Icon(
                     Icons.edit,
@@ -155,6 +155,11 @@ class Task extends StatelessWidget {
                   onPressed: () {
                     if(task.isDeleted){
                       task.toggleIsDeleted();
+                      DateTime notificationTime=DateTime(task.date.year,task.date.month,task.date.day,task.start.hour,task.start.minute);
+                      NotificationProvider.instance.scheduleNotification(task.title, notificationTime, task.priority, task.id);
+                    }
+                    if(task.isArchived){
+                        task.toggleIsArchived();
                       DateTime notificationTime=DateTime(task.date.year,task.date.month,task.date.day,task.start.hour,task.start.minute);
                       NotificationProvider.instance.scheduleNotification(task.title, notificationTime, task.priority, task.id);
                     }
