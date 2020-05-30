@@ -28,7 +28,7 @@ class _AddState extends State<AddTask> {
           "${this.task.date.day}/${this.task.date.month}/${this.task.date.year}";
       timeController.text = "${this.task.start.hour}:${this.task.start.minute}";
       endTimeController.text = "${this.task.end.hour}:${this.task.end.minute}";
-      _priority=task.priority;
+      _priority = task.priority;
     }
     super.initState();
   }
