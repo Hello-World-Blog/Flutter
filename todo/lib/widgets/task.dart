@@ -1,21 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo/models/task.dart';
 import 'package:todo/pages/add_a_task.dart';
-import 'package:todo/utils/database_provider.dart';
 import 'package:todo/utils/notification_provider.dart';
 
-class Task extends StatefulWidget {
-  final TaskModel task;
-  final Function notifyParent;
-  Task(this.task, {Key key, @required this.notifyParent}) : super(key: key);
-  _TaskState createState() => _TaskState(this.task);
-}
+import '../models/task.dart';
 
-class _TaskState extends State<Task> {
-  TaskModel task;
-  _TaskState(this.task);
+class Task extends StatelessWidget {
   Widget build(BuildContext context) {
+    final task = Provider.of<TaskModel>(context);
     DateTime date = task.date.toLocal();
     String time = date.day.toString() +
         "-" +
@@ -83,13 +77,8 @@ class _TaskState extends State<Task> {
                           color: Colors.green,
                         ),
                   onPressed: () {
-                    task.isCompleted = !task.isCompleted;
-                    DatabaseProvider.db.delete(task.id);
-                    DatabaseProvider.db.insert(task).then((value) =>
-                        NotificationProvider.instance
-                            .cancelNotification(task.id));
-                    setState(() {});
-                    widget.notifyParent();
+                    task.toggleIsCompleted();
+                    NotificationProvider.instance.cancelNotification(task.id);
                   }),
               SizedBox(
                 width: 10,
@@ -124,12 +113,12 @@ class _TaskState extends State<Task> {
               children: [
                 IconButton(
                   iconSize: 25,
-                  icon: this.task.priority == 3
+                  icon: task.priority == 3
                       ? Image.asset(
                           "assets/icons/icon_high.png",
                           color: Colors.red,
                         )
-                      : this.task.priority == 2
+                      : task.priority == 2
                           ? Image.asset("assets/icons/icon_medium.png",
                               color: Colors.orange[700])
                           : Image.asset(
