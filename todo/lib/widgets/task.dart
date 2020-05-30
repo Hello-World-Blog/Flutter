@@ -78,11 +78,16 @@ class Task extends StatelessWidget {
                         ),
                   onPressed: () {
                     task.toggleIsCompleted();
-                    task.isCompleted
-                        ? NotificationProvider.instance
-                            .cancelNotification(task.id)
-                        : NotificationProvider.instance.scheduleNotification(
-                            task.title, task.date, task.priority, task.id);
+                    if(task.isCompleted){
+                      NotificationProvider.instance
+                            .cancelNotification(task.id);
+                    }
+                    else{
+                      DateTime notificationTime = DateTime(task.date.year, task.date.month,
+          task.date.day, task.start.hour, task.start.minute);
+                        NotificationProvider.instance.scheduleNotification(
+                            task.title, notificationTime, task.priority, task.id);
+                    }
                   }),
               SizedBox(
                 width: 10,
