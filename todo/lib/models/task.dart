@@ -9,6 +9,8 @@ class TaskModel with ChangeNotifier {
   TimeOfDay start;
   TimeOfDay end;
   bool isCompleted;
+  bool isArchived;
+  bool isDeleted;
   int priority;
 
   TaskModel(
@@ -18,6 +20,8 @@ class TaskModel with ChangeNotifier {
       this.start,
       this.end,
       this.isCompleted: false,
+      this.isArchived: false,
+      this.isDeleted: false,
       this.priority: 0});
 
   Map<String, dynamic> toMap() {
@@ -28,6 +32,8 @@ class TaskModel with ChangeNotifier {
       DatabaseProvider.COLUMN_START: start == null ? null : toMinutes(start),
       DatabaseProvider.COLUMN_END: end == null ? null : toMinutes(end),
       DatabaseProvider.COLUMN_COMPLETED: isCompleted ? 1 : 0,
+      DatabaseProvider.COLUMN_ARCHIVED: isArchived ? 1 : 0,
+      DatabaseProvider.COLUMN_DELETED: isDeleted ? 1 : 0,
       DatabaseProvider.COLUMN_PRIORITY: priority
     };
 
@@ -51,11 +57,23 @@ class TaskModel with ChangeNotifier {
         ? null
         : toTime(map[DatabaseProvider.COLUMN_END]);
     isCompleted = map[DatabaseProvider.COLUMN_COMPLETED] == 1;
+    isArchived = map[DatabaseProvider.COLUMN_ARCHIVED] == 1;
+    isDeleted = map[DatabaseProvider.COLUMN_DELETED] == 1;
     priority = map[DatabaseProvider.COLUMN_PRIORITY];
   }
 
   void toggleIsCompleted() {
     isCompleted = !isCompleted;
+    DatabaseProvider.db.update(this);
+    notifyListeners();
+  }
+  void toggleIsArchived() {
+    isArchived=!isArchived;
+    DatabaseProvider.db.update(this);
+    notifyListeners();
+  }
+  void toggleIsDeleted() {
+    isDeleted=!isDeleted;
     DatabaseProvider.db.update(this);
     notifyListeners();
   }

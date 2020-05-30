@@ -25,11 +25,19 @@ class TasksProvider with ChangeNotifier {
   }
 
   List<TaskModel> get allTasks {
-    return [..._items];
+    return _items.where((item) => !item.isArchived&&!item.isDeleted).toList();
   }
 
   List<TaskModel> get completedTasks {
     return _items.where((item) => item.isCompleted).toList();
+  }
+
+  List<TaskModel> get archivedTasks {
+    return _items.where((item) => item.isArchived).toList();
+  }
+
+  List<TaskModel> get deletedTasks {
+    return _items.where((item) => item.isDeleted).toList();
   }
 
   // void addTask({

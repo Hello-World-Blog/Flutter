@@ -41,9 +41,11 @@ class NotificationProvider {
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
     NotificationDetails platformChannelSpecifics = NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+    if(date.difference(DateTime.now())>Duration(days: 0,minutes: 0,microseconds: 0,milliseconds: 0)){
     await flutterLocalNotificationsPlugin.schedule(
         id, '$title', body, date, platformChannelSpecifics,
         androidAllowWhileIdle: true);
+    }
   }
 
   Future<void> cancelNotification(int id) async {

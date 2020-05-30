@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo/utils/notification_provider.dart';
 import '../providers/tasks_provider.dart';
 import './task.dart';
+import 'dialogs.dart';
 
-class AllTasks extends StatelessWidget {
+class AllTasks extends StatefulWidget {
+  _AllTaskState createState()=>_AllTaskState();
+}
+class _AllTaskState extends State<AllTasks>{
   @override
   Widget build(BuildContext context) {
     return Consumer<TasksProvider>(
@@ -14,12 +17,18 @@ class AllTasks extends StatelessWidget {
           itemBuilder: (context, index) {
             var item = tasks.allTasks[index];
             return Dismissible(
-              confirmDismiss: (direction) => showDismissDialog(context, item),
+              confirmDismiss: (direction) => showArchiveDialog(context, item,true),
               direction: DismissDirection.startToEnd,
               background: Container(
-                color: Colors.red,
-                child: Icon(
-                  Icons.delete,
+                color: Colors.blue,
+                child: item.isArchived?
+                 Icon(
+                   Icons.unarchive,
+                   size: 30,
+                   color: Colors.white,
+                 )
+                :Icon(
+                  Icons.archive,
                   size: 30,
                   color: Colors.white,
                 ),
@@ -35,35 +44,9 @@ class AllTasks extends StatelessWidget {
       },
     );
   }
-
-  Future<bool> showDismissDialog(context, item) async {
-    showDialog(
-      context: context,
-      child: AlertDialog(
-        actions: [
-          IconButton(
-              icon: Icon(Icons.check, color: Colors.green),
-              onPressed: () async {
-                Provider.of<TasksProvider>(context, listen: false)
-                    .deleteTask(item.id);
-                await NotificationProvider.instance.cancelNotification(item.id);
-                Navigator.pop(context);
-                return true;
-              }),
-          IconButton(
-            icon: Icon(
-              Icons.error,
-              color: Colors.red,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-              return false;
-            },
-          ),
-        ],
-        content: Text("Would you like to delete the Task ?"),
-      ),
-    );
-    return false;
+  void refresh(){
+    setState(() {
+      
+    });
   }
 }

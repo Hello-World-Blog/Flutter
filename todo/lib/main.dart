@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/pages/add_a_task.dart';
 import 'package:flutter/services.dart';
+import 'package:todo/widgets/drawer.dart';
 
 import 'providers/tasks_provider.dart';
 import './widgets/all_tasks.dart';
@@ -80,6 +81,7 @@ class _ToDoState extends State<ToDoHome> with TickerProviderStateMixin {
     DateTime today = DateTime.now();
     return SafeArea(
       child: Scaffold(
+        drawer: CustomDrawer(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: IconButton(
           icon: Icon(Icons.add_circle_outline),
@@ -92,6 +94,7 @@ class _ToDoState extends State<ToDoHome> with TickerProviderStateMixin {
           color: Color(0xff8280FF),
         ),
         appBar: AppBar(
+            iconTheme: IconThemeData(color: Color(0xff8280FF)),
             elevation: 0,
             backgroundColor: Colors.white,
             title: Text(

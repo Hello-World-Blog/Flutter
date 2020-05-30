@@ -6,6 +6,7 @@ import 'package:todo/pages/add_a_task.dart';
 import 'package:todo/utils/notification_provider.dart';
 
 import '../models/task.dart';
+import 'dialogs.dart';
 
 class Task extends StatelessWidget {
   Widget build(BuildContext context) {
@@ -59,36 +60,43 @@ class Task extends StatelessWidget {
             Expanded(child: Divider(color: Colors.grey[200], thickness: 1)),
           ],
         ),
-        SizedBox(
-          height: 15,
-        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(children: [
-              IconButton(
-                  icon: task.isCompleted
-                      ? Icon(
-                          Icons.check_circle,
-                          color: Colors.green,
-                        )
-                      : Icon(
-                          Icons.blur_circular,
-                          color: Colors.green,
-                        ),
-                  onPressed: () {
-                    task.toggleIsCompleted();
-                    if(task.isCompleted){
-                      NotificationProvider.instance
-                            .cancelNotification(task.id);
-                    }
-                    else{
-                      DateTime notificationTime = DateTime(task.date.year, task.date.month,
-          task.date.day, task.start.hour, task.start.minute);
-                        NotificationProvider.instance.scheduleNotification(
-                            task.title, notificationTime, task.priority, task.id);
-                    }
-                  }),
+              task.isArchived || task.isDeleted
+                  ? SizedBox(
+                      width: 10,
+                    )
+                  : IconButton(
+                      icon: task.isCompleted
+                          ? Icon(
+                              Icons.check_circle,
+                              color: Colors.green,
+                            )
+                          : Icon(
+                              Icons.blur_circular,
+                              color: Colors.green,
+                            ),
+                      onPressed: () {
+                        task.toggleIsCompleted();
+                        if (task.isCompleted) {
+                          NotificationProvider.instance
+                              .cancelNotification(task.id);
+                        } else {
+                          DateTime notificationTime = DateTime(
+                              task.date.year,
+                              task.date.month,
+                              task.date.day,
+                              task.start.hour,
+                              task.start.minute);
+                          NotificationProvider.instance.scheduleNotification(
+                              task.title,
+                              notificationTime,
+                              task.priority,
+                              task.id);
+                        }
+                      }),
               SizedBox(
                 width: 10,
               ),
@@ -136,19 +144,44 @@ class Task extends StatelessWidget {
                             ),
                   onPressed: () {},
                 ),
+                Column(children: [
                 IconButton(
-                  icon: Icon(
+                  icon: task.isDeleted? 
+                  Icon(Icons.restore,size: 25,color: Colors.green,)
+                  :Icon(
                     Icons.edit,
                     size: 25,
                   ),
                   onPressed: () {
+                    if(task.isDeleted){
+                      task.toggleIsDeleted();
+                      DateTime notificationTime=DateTime(task.date.year,task.date.month,task.date.day,task.start.hour,task.start.minute);
+                      NotificationProvider.instance.scheduleNotification(task.title, notificationTime, task.priority, task.id);
+                    }
+                    else{
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => AddTask(
                               task: task,
                             )));
+                    }
                   },
                   color: Color(0xff8280FF),
                 ),
+                IconButton(
+                  icon:task.isDeleted?
+                  Icon(Icons.delete_forever,
+                  size: 25,
+                  )
+                  :Icon(
+                    Icons.delete,
+                    size: 25,
+                  ),
+                  onPressed: () {
+                    showDismissDialog(context, task, task.isDeleted);
+                  },
+                  color: Colors.red,
+                ),
+                ]),
               ],
             )
           ],

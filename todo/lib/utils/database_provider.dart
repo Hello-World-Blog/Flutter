@@ -17,7 +17,8 @@ class DatabaseProvider {
   static const COLUMN_PRIORITY = 'priority';
   static const COLUMN_DATE = 'date';
   static const COLUMN_COMPLETED = 'isCompleted';
-
+  static const COLUMN_ARCHIVED = 'isArchived';
+  static const COLUMN_DELETED = 'isDeleted';
   DatabaseProvider._private();
 
   static final DatabaseProvider db = DatabaseProvider._private();
@@ -48,6 +49,8 @@ class DatabaseProvider {
         "$COLUMN_START INT,"
         "$COLUMN_END INT,"
         "$COLUMN_COMPLETED INT,"
+        "$COLUMN_ARCHIVED INT,"
+        "$COLUMN_DELETED INT,"
         "$COLUMN_PRIORITY INT"
         ")");
   }
@@ -94,6 +97,8 @@ class DatabaseProvider {
         start: task.start,
         title: task.title,
         priority: task.priority,
+        isArchived: task.isArchived,
+        isDeleted: task.isDeleted,
         isCompleted: !task.isCompleted);
     var res = await db.update(TASKS_TABLE, completed.toMap(),
         where: "id = ?", whereArgs: [task.id]);
