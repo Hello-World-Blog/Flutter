@@ -8,13 +8,13 @@ class AllTasks extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<TasksProvider>(
-      builder: (ctx, tasks, child) {
+      builder: (context, tasks, child) {
         return ListView.builder(
           itemCount: tasks.allTasks.length,
-          itemBuilder: (ctx, index) {
+          itemBuilder: (context, index) {
             var item = tasks.allTasks[index];
             return Dismissible(
-              confirmDismiss: (direction) => showDismissDialog(ctx, item),
+              confirmDismiss: (direction) => showDismissDialog(context, item),
               direction: DismissDirection.startToEnd,
               background: Container(
                 color: Colors.red,
