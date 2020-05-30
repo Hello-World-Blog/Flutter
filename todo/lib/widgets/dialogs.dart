@@ -12,7 +12,7 @@ Future<bool> showArchiveDialog(context, item,bool toArchive) async {
           IconButton(
               icon: Icon(Icons.check, color: Colors.green),
               onPressed: () async {
-                item.toggleIsArchived();
+                Provider.of<TasksProvider>(context, listen: false).archivedTask(item.id);
                 if(toArchive){
                 await NotificationProvider.instance.cancelNotification(item.id);
                 }
