@@ -12,26 +12,27 @@ class AllTasks extends StatelessWidget {
           itemCount: tasks.allTasks.length,
           itemBuilder: (context, index) {
             var item = tasks.allTasks[index];
-            return Dismissible(
-              confirmDismiss: (direction) => showArchiveDialog(context, item,true),
-              direction: DismissDirection.startToEnd,
-              background: Container(
-                color: Colors.blue,
-                child: item.isArchived?
-                 Icon(
-                   Icons.unarchive,
-                   size: 30,
-                   color: Colors.white,
-                 )
-                :Icon(
-                  Icons.archive,
-                  size: 30,
-                  color: Colors.white,
+            return ChangeNotifierProvider.value(
+              value: item,
+              child: Dismissible(
+                confirmDismiss: (direction) =>
+                    showArchiveDialog(context, item, true),
+                direction: DismissDirection.startToEnd,
+                background: Container(
+                  color: Colors.blue,
+                  child: item.isArchived
+                      ? Icon(
+                          Icons.unarchive,
+                          size: 30,
+                          color: Colors.white,
+                        )
+                      : Icon(
+                          Icons.archive,
+                          size: 30,
+                          color: Colors.white,
+                        ),
                 ),
-              ),
-              key: ObjectKey(item),
-              child: ChangeNotifierProvider.value(
-                value: item,
+                key: ObjectKey(item),
                 child: Task(),
               ),
             );

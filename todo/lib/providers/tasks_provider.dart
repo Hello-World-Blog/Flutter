@@ -25,7 +25,7 @@ class TasksProvider with ChangeNotifier {
   }
 
   List<TaskModel> get allTasks {
-    return _items.where((item) => !item.isArchived&&!item.isDeleted).toList();
+    return _items.where((item) => !item.isArchived && !item.isDeleted).toList();
   }
 
   List<TaskModel> get completedTasks {
@@ -40,21 +40,6 @@ class TasksProvider with ChangeNotifier {
     return _items.where((item) => item.isDeleted).toList();
   }
 
-  // void addTask({
-  //   String title,
-  //   DateTime date,
-  //   TimeOfDay start,
-  //   TimeOfDay end,
-  //   int priority,
-  // }) {
-  //   var currentTask = TaskModel(
-  //       title: title, date: date, start: start, end: end, priority: priority);
-  //   DatabaseProvider.db.insert(currentTask).then((task) {
-  //     _items.add(task);
-  //     notifyListeners();
-  //   });
-  // }
-
   Future<TaskModel> addTask(TaskModel currentTask) {
     return DatabaseProvider.db.insert(currentTask).then((task) {
       _items.add(task);
@@ -68,5 +53,10 @@ class TasksProvider with ChangeNotifier {
       _items.removeWhere((task) => task.id == id);
       notifyListeners();
     });
+  }
+
+  void archivedTask(int id) {
+    _items.firstWhere((task) => task.id == id).toggleIsArchived();
+    notifyListeners();
   }
 }
