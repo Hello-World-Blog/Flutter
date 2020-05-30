@@ -8,9 +8,13 @@ class ArchivePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         iconTheme: IconThemeData(color: Color(0xff8280FF)),
         backgroundColor: Colors.white,
-        title: Text("Archived Tasks",style: TextStyle(color: Color(0xff8280FF)),),
+        title: Text(
+          "Archived Tasks",
+          style: TextStyle(color: Color(0xff8280FF)),
+        ),
       ),
       body: Consumer<TasksProvider>(builder: (context, tasks, child) {
         return ListView.builder(

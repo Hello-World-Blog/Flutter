@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo/pages/about_page.dart';
 import 'package:todo/pages/archive_page.dart';
 import 'package:todo/pages/deleted_page.dart';
 // import 'package:todo/pages/archive_page.dart';
@@ -26,7 +27,9 @@ class CustomDrawer extends StatelessWidget {
           ),
           onTap: () {
             Navigator.pop(context);
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArchivePage(),));
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => ArchivePage(),
+            ));
           },
         ),
         Divider(),
@@ -41,7 +44,9 @@ class CustomDrawer extends StatelessWidget {
           ),
           onTap: () {
             Navigator.pop(context);
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => DeletePage(),));
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => DeletePage(),
+            ));
           },
         ),
         Divider(),
@@ -56,15 +61,11 @@ class CustomDrawer extends StatelessWidget {
           ),
           onTap: () {
             Navigator.pop(context);
-            showAboutDialog(context: context,
-            applicationName: "ToDo.",
-            applicationIcon: Image.asset("assets/icons/logo.png",height:50,width:50),
-            children: [
-              Text("Task Scheduler."),
-              Text("You will now never miss a thing..!"),
-              Text("Your privacy is our concern, everything lies in your mobile")
-            ],
-            );
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AboutPage(),
+                ));
           },
         ),
         Divider(),

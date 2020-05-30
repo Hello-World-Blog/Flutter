@@ -70,7 +70,6 @@ void showDismissDialog(context, item, isPermanent) {
                     .toggleSoftDelete(item.id);
                 await NotificationProvider.instance.cancelNotification(item.id);
               }
-              print(context);
               Navigator.pop(context);
               return true;
             }),

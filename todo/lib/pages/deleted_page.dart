@@ -8,9 +8,13 @@ class DeletePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         iconTheme: IconThemeData(color: Color(0xff8280FF)),
         backgroundColor: Colors.white,
-        title: Text("Deleted Tasks",style: TextStyle(color: Color(0xff8280FF)),),
+        title: Text(
+          "Deleted Tasks",
+          style: TextStyle(color: Color(0xff8280FF)),
+        ),
       ),
       body: Consumer<TasksProvider>(builder: (context, tasks, child) {
         return ListView.builder(

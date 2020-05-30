@@ -64,12 +64,6 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Gilroy
-      fonts:
-        - asset: assets/fonts/Gilroy.otf
-    - family: Montserrat
-      fonts:
-        - asset: assets/fonts/Montserrat.ttf
     - family: Segoe UI
       fonts:
         - asset: assets/fonts/segoe-ui.ttf
