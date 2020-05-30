@@ -4,11 +4,7 @@ import '../providers/tasks_provider.dart';
 import './task.dart';
 import 'dialogs.dart';
 
-class AllTasks extends StatefulWidget {
-  _AllTaskState createState()=>_AllTaskState();
-}
-class _AllTaskState extends State<AllTasks>{
-  @override
+class AllTasks extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<TasksProvider>(
       builder: (context, tasks, child) {
@@ -43,10 +39,5 @@ class _AllTaskState extends State<AllTasks>{
         );
       },
     );
-  }
-  void refresh(){
-    setState(() {
-      
-    });
   }
 }
