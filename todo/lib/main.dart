@@ -7,6 +7,7 @@ import 'package:todo/widgets/drawer.dart';
 import 'providers/tasks_provider.dart';
 import './widgets/all_tasks.dart';
 import './widgets/completed_tasks.dart';
+import './utils/globals.dart';
 
 void main() {
   runApp(MyApp());
@@ -81,6 +82,7 @@ class _ToDoState extends State<ToDoHome> with TickerProviderStateMixin {
     DateTime today = DateTime.now();
     return SafeArea(
       child: Scaffold(
+        key: globals.scaffoldKey,
         drawer: CustomDrawer(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: IconButton(
