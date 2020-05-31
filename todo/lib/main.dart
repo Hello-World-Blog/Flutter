@@ -100,7 +100,7 @@ class _ToDoState extends State<ToDoHome> with TickerProviderStateMixin {
             elevation: 0,
             backgroundColor: Colors.white,
             title: Text(
-              "Todo.",
+              "ToDo.",
               style: TextStyle(
                   color: Color(0xff8280FF),
                   fontSize: 28,

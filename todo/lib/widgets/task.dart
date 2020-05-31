@@ -156,6 +156,7 @@ class Task extends StatelessWidget {
                         : Icon(
                             Icons.edit,
                             size: 25,
+                            color: Colors.cyan,
                           ),
                     onPressed: () {
                       if (task.isDeleted) {
