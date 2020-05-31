@@ -67,13 +67,15 @@ class TaskModel with ChangeNotifier {
     DatabaseProvider.db.update(this);
     notifyListeners();
   }
+
   void toggleIsArchived() {
-    isArchived=!isArchived;
+    isArchived = !isArchived;
     DatabaseProvider.db.update(this);
     notifyListeners();
   }
+
   void toggleIsDeleted() {
-    isDeleted=!isDeleted;
+    isDeleted = !isDeleted;
     DatabaseProvider.db.update(this);
     notifyListeners();
   }
