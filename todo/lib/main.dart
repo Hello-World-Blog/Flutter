@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/pages/add_a_task.dart';
-import 'package:flutter/services.dart';
 import 'package:todo/widgets/drawer.dart';
 
 import 'providers/tasks_provider.dart';
@@ -38,7 +37,6 @@ List<String> months = [
 
 class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIOverlays([]);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
