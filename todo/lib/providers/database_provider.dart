@@ -19,6 +19,10 @@ class DatabaseProvider {
   static const COLUMN_COMPLETED = 'isCompleted';
   static const COLUMN_ARCHIVED = 'isArchived';
   static const COLUMN_DELETED = 'isDeleted';
+  static const COLUMN_CATEGORY = 'categoryId';
+  static const CATEGORY_TABLE = "categories";
+  static const CATEGORY_ID = "id";
+  static const CATEGORY_NAME= "categoryName";
   DatabaseProvider._private();
 
   static final DatabaseProvider db = DatabaseProvider._private();
@@ -42,6 +46,11 @@ class DatabaseProvider {
   }
 
   Future<void> _createDatabase(Database db, int version) async {
+    await db.execute('''CREATE TABLE $CATEGORY_TABLE ( 
+        $CATEGORY_ID INTEGER PRIMARY KEY,
+        $CATEGORY_NAME TEXT
+        )'''
+        );
     await db.execute("CREATE TABLE $TASKS_TABLE  ("
         "$COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT,"
         "$COLUMN_TITLE TEXT,"
@@ -51,8 +60,14 @@ class DatabaseProvider {
         "$COLUMN_COMPLETED INT,"
         "$COLUMN_ARCHIVED INT,"
         "$COLUMN_DELETED INT,"
-        "$COLUMN_PRIORITY INT"
+        "$COLUMN_PRIORITY INT,"
+        "$COLUMN_CATEGORY INT,"
+        "FOREIGN KEY ($COLUMN_CATEGORY) REFERENCES $CATEGORY_TABLE (id)"
         ")");
+    await db.insert(CATEGORY_TABLE, {DatabaseProvider.CATEGORY_ID:1,DatabaseProvider.CATEGORY_NAME:"Personal"});
+    await db.insert(CATEGORY_TABLE, {DatabaseProvider.CATEGORY_ID:2,DatabaseProvider.CATEGORY_NAME:"Social"});
+    await db.insert(CATEGORY_TABLE, {DatabaseProvider.CATEGORY_ID:3,DatabaseProvider.CATEGORY_NAME:"Work"});
+    await db.insert(CATEGORY_TABLE, {DatabaseProvider.CATEGORY_ID:4,DatabaseProvider.CATEGORY_NAME:"Family"});
   }
 
   Future<List<TaskModel>> getTasks() async {
@@ -84,6 +99,7 @@ class DatabaseProvider {
     final db = await database;
     var tasks = await db.rawQuery(
         'SELECT * FROM $TASKS_TABLE ORDER BY $COLUMN_DATE ASC,$COLUMN_START ASC');
+    print(tasks);
     return List.generate(tasks.length, (index) {
       return TaskModel.fromMap(tasks[index]);
     });
@@ -99,6 +115,7 @@ class DatabaseProvider {
         priority: task.priority,
         isArchived: task.isArchived,
         isDeleted: task.isDeleted,
+        categoryId: task.categoryId,
         isCompleted: !task.isCompleted);
     var res = await db.update(TASKS_TABLE, completed.toMap(),
         where: "id = ?", whereArgs: [task.id]);

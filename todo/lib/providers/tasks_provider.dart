@@ -2,7 +2,7 @@ import 'dart:core';
 
 import 'package:flutter/material.dart';
 import '../models/task.dart';
-import '../utils/database_provider.dart';
+import 'database_provider.dart';
 
 class TasksProvider with ChangeNotifier {
   bool isInit = false;

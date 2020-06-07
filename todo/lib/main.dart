@@ -1,3 +1,4 @@
+import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/pages/add_a_task.dart';
@@ -66,6 +67,7 @@ class ToDoHome extends StatefulWidget {
 
 class _ToDoState extends State<ToDoHome> with TickerProviderStateMixin {
   TabController _tabController;
+  int _selectedindex=0;
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
@@ -82,9 +84,22 @@ class _ToDoState extends State<ToDoHome> with TickerProviderStateMixin {
     DateTime today = DateTime.now();
     return SafeArea(
       child: Scaffold(
+        bottomNavigationBar: BottomNavyBar(
+          selectedIndex: _selectedindex,
+          onItemSelected: (value){
+            setState(() {
+              _selectedindex=value;
+            });
+          },
+          items: [
+          BottomNavyBarItem(icon: Icon(Icons.person),title: Text("Personal"),activeColor: Colors.yellow[600]),
+          BottomNavyBarItem(icon: Icon(Icons.work),title: Text("Work"),activeColor: Colors.green),
+          BottomNavyBarItem(icon: Icon(Icons.group),title: Text("Family"),activeColor: Colors.orange),
+          BottomNavyBarItem(icon: Icon(Icons.swap_horizontal_circle),title: Text("Social"),activeColor: Colors.red)
+        ],),
         key: globals.scaffoldKey,
         drawer: CustomDrawer(),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: IconButton(
           icon: Icon(Icons.add_circle_outline),
           onPressed: () {

@@ -15,8 +15,7 @@ class AboutPage extends StatelessWidget {
       ),
       body: Container(
           padding: EdgeInsets.only(left: 50, right: 50, top: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+          child: ListView(
             children: [
               Image.asset(
                 "assets/icons/logo.png",
@@ -34,6 +33,7 @@ class AboutPage extends StatelessWidget {
               ),
               Text(
                 "Our Contributors",
+                textAlign: TextAlign.center,
                 style: TextStyle(
                     color: Color(0xff8280FF),
                     fontWeight: FontWeight.bold,
@@ -45,10 +45,12 @@ class AboutPage extends StatelessWidget {
               ),
               Text(
                 "Tarun",
+                textAlign: TextAlign.center,
                 style: TextStyle(color: Color(0xff8280FF), fontSize: 20),
               ),
               Text(
                 "Deva Kumar Kilim",
+                textAlign: TextAlign.center,
                 style: TextStyle(color: Color(0xff8280FF), fontSize: 20),
               )
             ],

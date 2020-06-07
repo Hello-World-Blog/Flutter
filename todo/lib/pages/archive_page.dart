@@ -17,7 +17,9 @@ class ArchivePage extends StatelessWidget {
         ),
       ),
       body: Consumer<TasksProvider>(builder: (context, tasks, child) {
-        return ListView.builder(
+        return Container(
+          color: Colors.white,
+          child:ListView.builder(
           itemCount: tasks.archivedTasks.length,
           itemBuilder: (context, index) {
             var item = tasks.archivedTasks[index];
@@ -26,7 +28,7 @@ class ArchivePage extends StatelessWidget {
               child: Task(),
             );
           },
-        );
+        ));
       }),
     );
   }

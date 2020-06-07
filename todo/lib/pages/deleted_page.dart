@@ -17,7 +17,9 @@ class DeletePage extends StatelessWidget {
         ),
       ),
       body: Consumer<TasksProvider>(builder: (context, tasks, child) {
-        return ListView.builder(
+        return Container(
+          color: Colors.white,
+          child:ListView.builder(
           itemCount: tasks.deletedTasks.length,
           itemBuilder: (context, index) {
             var item = tasks.deletedTasks[index];
@@ -26,7 +28,7 @@ class DeletePage extends StatelessWidget {
               child: Task(),
             );
           },
-        );
+        ));
       }),
     );
   }

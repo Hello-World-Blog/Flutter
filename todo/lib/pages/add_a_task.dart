@@ -13,6 +13,7 @@ class AddTask extends StatefulWidget {
 class _AddState extends State<AddTask> {
   final TaskModel task;
   _AddState({this.task});
+  int _selectedCategory=0;
   TextEditingController controller = new TextEditingController();
   TextEditingController timeController = new TextEditingController();
   TextEditingController taskController = new TextEditingController();
@@ -43,26 +44,25 @@ class _AddState extends State<AddTask> {
     double width = MediaQuery.of(context).size.width;
     return SafeArea(
         child: Scaffold(
-            floatingActionButton: RaisedButton(
-              onPressed: () async {
+            appBar: AppBar(
+              actions: <Widget>[
+                GestureDetector(
+              onTap: () async {
                 if (this.task == null) {
                   saveTask(newTask, context);
                 } else {
                   saveTask(task, context);
                 }
               },
-              child: Text(
-                "Save Task",
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
-                ),
+              child: Container(
+                    child: Text(
+                      "Save",
+                      style: TextStyle(fontSize: 20, color: Color(0xff8280FF)),
+                    ),
+                    padding: EdgeInsets.all(15),
+                  ),
               ),
-              color: Color(0xff8280FF),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-            ),
-            appBar: AppBar(
+              ],
               title: Text(
                 "Create New Task.",
                 style: TextStyle(color: Color(0xff8280FF), fontSize: 24),
@@ -72,7 +72,7 @@ class _AddState extends State<AddTask> {
               iconTheme: IconThemeData(color: Colors.grey),
             ),
             floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerFloat,
+                FloatingActionButtonLocation.centerDocked,
             body: Container(
               padding: EdgeInsets.fromLTRB(20, 50, 30, 0),
               decoration: BoxDecoration(
@@ -289,7 +289,109 @@ class _AddState extends State<AddTask> {
                       ],
                     ),
                     padding: EdgeInsets.only(top: 60),
-                  )
+                  ),
+                  Padding(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.category,
+                              color: Colors.grey,
+                            ),
+                            Text(
+                              "Category",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                        Row(children: [
+                          Column(children: [
+                            Radio(
+                              activeColor: Colors.yellow[600],
+                              value: 1,
+                              groupValue: _selectedCategory,
+                              onChanged: (value) {
+                                setState(() {
+                                  _selectedCategory = value;
+                                });
+                                task == null
+                                    ? newTask.categoryId = _selectedCategory
+                                    : task.categoryId = _selectedCategory;
+                              },
+                            ),
+                            Text(
+                              "Personal",
+                              style: TextStyle(color: Colors.yellow[600]),
+                            )
+                          ]),
+                          Column(children: [
+                            Radio(
+                              activeColor: Colors.green,
+                              value: 2,
+                              groupValue: _selectedCategory,
+                              onChanged: (value) {
+                                setState(() {
+                                  _selectedCategory = value;
+                                });
+                                task == null
+                                    ? newTask.categoryId = _selectedCategory
+                                    : task.categoryId = _selectedCategory;
+                              },
+                            ),
+                            Text(
+                              "Work",
+                              style: TextStyle(color: Colors.green),
+                            )
+                          ]),
+                          Column(children: [
+                            Radio(
+                              activeColor: Colors.orange,
+                              value: 3,
+                              groupValue: _selectedCategory,
+                              onChanged: (value) {
+                                setState(() {
+                                  _selectedCategory = value;
+                                });
+                                task == null
+                                    ? newTask.categoryId = _selectedCategory
+                                    : task.categoryId = _selectedCategory;
+                              },
+                            ),
+                            Text(
+                              "Family",
+                              style: TextStyle(color: Colors.orange),
+                            )
+                          ]),
+                          Column(children: [
+                            Radio(
+                              activeColor: Colors.red,
+                              value: 4,
+                              groupValue: _selectedCategory,
+                              onChanged: (value) {
+                                setState(() {
+                                  _selectedCategory = value;
+                                });
+                                task == null
+                                    ? newTask.categoryId = _selectedCategory
+                                    : task.categoryId = _selectedCategory;
+                              },
+                            ),
+                            Text(
+                              "Social",
+                              style: TextStyle(color: Colors.red),
+                            )
+                          ])
+                        ]),
+                      ],
+                    ),
+                    padding: EdgeInsets.only(top: 60),
+                  ),
+                  SizedBox(height: 30,)
                 ],
               ),
             )));

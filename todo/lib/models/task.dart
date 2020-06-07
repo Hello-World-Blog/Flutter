@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo/utils/database_provider.dart';
+import 'package:todo/providers/database_provider.dart';
 import 'package:todo/utils/time_util.dart';
 
 class TaskModel with ChangeNotifier {
@@ -12,6 +12,7 @@ class TaskModel with ChangeNotifier {
   bool isArchived;
   bool isDeleted;
   int priority;
+  int categoryId;
 
   TaskModel(
       {this.id,
@@ -22,7 +23,9 @@ class TaskModel with ChangeNotifier {
       this.isCompleted: false,
       this.isArchived: false,
       this.isDeleted: false,
-      this.priority: 0});
+      this.priority: 0,
+      this.categoryId
+      });
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
@@ -34,7 +37,8 @@ class TaskModel with ChangeNotifier {
       DatabaseProvider.COLUMN_COMPLETED: isCompleted ? 1 : 0,
       DatabaseProvider.COLUMN_ARCHIVED: isArchived ? 1 : 0,
       DatabaseProvider.COLUMN_DELETED: isDeleted ? 1 : 0,
-      DatabaseProvider.COLUMN_PRIORITY: priority
+      DatabaseProvider.COLUMN_PRIORITY: priority,
+      DatabaseProvider.CATEGORY_ID: categoryId
     };
 
     if (id != null) {
@@ -60,6 +64,7 @@ class TaskModel with ChangeNotifier {
     isArchived = map[DatabaseProvider.COLUMN_ARCHIVED] == 1;
     isDeleted = map[DatabaseProvider.COLUMN_DELETED] == 1;
     priority = map[DatabaseProvider.COLUMN_PRIORITY];
+    categoryId = map[DatabaseProvider.CATEGORY_ID];
   }
 
   void toggleIsCompleted() {

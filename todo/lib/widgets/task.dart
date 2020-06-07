@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/models/task.dart';
 import 'package:todo/pages/add_a_task.dart';
-import 'package:todo/utils/notification_provider.dart';
+import 'package:todo/providers/notification_provider.dart';
 
 import '../models/task.dart';
 import '../providers/tasks_provider.dart';

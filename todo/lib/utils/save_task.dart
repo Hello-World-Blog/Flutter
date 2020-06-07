@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo/providers/notification_provider.dart';
 import '../providers/tasks_provider.dart';
-import 'notification_provider.dart';
 
 bool isValidTask = false;
 void saveTask(task, context) async {
+  print(task);
   var allTasks = Provider.of<TasksProvider>(context, listen: false);
   isValidime(task.start, task.end, task.date, task.title);
   if (isValidTask == false) {

@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo/providers/notification_provider.dart';
 import 'package:todo/providers/tasks_provider.dart';
-import 'package:todo/utils/notification_provider.dart';
 
 import '../utils/globals.dart';
 
