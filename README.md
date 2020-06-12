@@ -1,5 +1,7 @@
-# Blog
-projects under blogging site <b>Hello World</b> at https://learnai1.home.blog/
+# Hello World
+<img src="HelloWorld.png" height=200 width=250>
+
+Projects under blogging site <b>Hello World</b> at https://learnai1.home.blog/
 
 Facebook Page : <a href="https://fb.com/HelloWorldFB">Hello World</a>
 
