@@ -31,7 +31,7 @@ List<String> months = [
   "July",
   "August",
   "September",
-  "October"
+  "October",
   "November",
   "December"
 ];
