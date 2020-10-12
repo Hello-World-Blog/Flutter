@@ -4,7 +4,6 @@ import 'package:flutter_rounded_date_picker/rounded_picker.dart';
 Future<DateTime> datetimepicker(context) async {
   DateTime newDateTime = await showRoundedDatePicker(
     context: context,
-    theme: ThemeData.dark(),
     fontFamily: "Segoe UI",
     firstDate: DateTime.now().subtract(Duration(days: 1)),
     lastDate: DateTime(2040, 12, 31),
